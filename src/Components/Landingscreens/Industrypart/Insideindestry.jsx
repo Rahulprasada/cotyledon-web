@@ -60,6 +60,7 @@ const Insideindestry = () => {
     fontWeight: "bold",
     fontSize: "21px",
     textAlign: "left",
+    cursor: "pointer"
   };
 
   const itemStyle = {

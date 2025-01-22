@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Container, Row, Col } from "react-bootstrap";
 import Indusryimg from "../../../Assets/pysss.JPG";
 import { Button } from "@mui/material";
-import { color } from "@mui/system";
+import { Grid } from "@mui/system";
 
 const Mainsection = styled.section`
   padding: 70px 0px;
@@ -100,6 +100,11 @@ export default function Industry() {
                 View all
               </a>
             </div>
+          </Col>
+          <Col md={5}>
+            <img src={Indusryimg} alt="industry img" />
+          </Col>
+          <Grid xs={6} md={6}>
             <div style={{ textAlign: "center", marginTop: "30px" }}>
               <Button
                 sx={{
@@ -118,10 +123,7 @@ export default function Industry() {
                 SEE ALL CLIENT RESULTS
               </Button>
             </div>
-          </Col>
-          <Col md={5}>
-            <img src={Indusryimg} alt="industry img" />
-          </Col>
+            </Grid>
         </Row>
       </Container>
     </Mainsection>
