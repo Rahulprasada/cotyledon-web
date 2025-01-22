@@ -2,23 +2,27 @@ import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Box, Drawer, IconButton } from "@mui/material";
+import { Box, Drawer, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CloseIcon from "@mui/icons-material/Close";
-import { Grid, margin, padding, width } from "@mui/system";
+import { Grid } from "@mui/system";
 import Drawerlist from "./Drawerlist";
 import Insideindestry from "./Landingscreens/Industrypart/Insideindestry.jsx";
 import Consultinginside from "./Landingscreens/consultinginside/Consultinginside.jsx";
 import SearchIcon from "@mui/icons-material/Search";
 import Saveicon from "@mui/icons-material/BookmarkBorder";
+import Insideinsides from "./Landingscreens/Insideinsides/Insideinsides.jsx";
 
 export default function NavBar() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const items = [
     {
       label: "Industries",
-      listItems: [{ label: <Insideindestry />, link: "/" }],
-      link: "/",
+      listItems: [{ label: <Insideindestry />, link: "indestry" }],
+      link: "",
     },
     {
       label: "Consulting Services",
@@ -31,7 +35,7 @@ export default function NavBar() {
     },
     {
       label: "Insights",
-      listItems: [{ label: "Insights", link: "/" }],
+      listItems: [{ label: <Insideinsides />, link: "/" }],
       link: "/contact",
     },
     {
@@ -43,28 +47,25 @@ export default function NavBar() {
   const [listItems, setListItems] = useState([]);
   const [isAppBarHovered, setIsAppBarHovered] = useState(false);
   const [isScrolled, setisScrolled] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [rotate, setrotate] = useState(false);
-  const [closenavbar, setclosenavbar] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const toggleDrawer = (newOpen) => () => {
-    console.log("you are clicked");
     setrotate(newOpen);
   };
 
   const PopOver = ({ open }) => {
     const style = {
       position: "absolute",
-      top: 50, // Move it to the left by 10px
-      transform: "none", // Prevent centering if transform is set
+      top: 50,
+      transform: "left",
       bgcolor: "white",
       color: "black",
-      padding: 4, // MUI uses padding instead of `p`
+      padding: 4,
       zIndex: 1000,
       width: "900px",
     };
-    
 
     return (
       <>
@@ -106,7 +107,7 @@ export default function NavBar() {
 
   const DrawerList = (
     <div style={{ display: "flex" }}>
-      <Drawerlist />
+      <Drawerlist toggleDrawer={toggleDrawer} />
       <div style={{ backgroundColor: "transparent" }}>
         <CloseIcon
           sx={{
@@ -174,7 +175,6 @@ export default function NavBar() {
             <Grid md={6} xs={12} display={"flex"}>
               <IconButton
                 edge="start"
-                color="white"
                 aria-label="menu"
                 onClick={toggleDrawer(true)}
                 sx={{
@@ -209,78 +209,60 @@ export default function NavBar() {
                 Cotyledon
               </Typography>
             </Grid>
-            <div style={{ display: "flex", marginLeft: "50px" }}>
-              {items.map((i, index) => (
-                <Typography
-                  key={index}
-                  variant="h6"
-                  sx={{
-                    color: hoveredIndex === index && "#cc0000",
-                    cursor: "pointer",
-                    fontSize: "1.0rem",
-                    display: "flex",
-                    alignItems: "center",
-                    marginLeft: "10px",
-                    "&:hover .arrow-icon": {
+            {!isMobile && (
+              <div style={{ display: "flex", marginLeft: "50px" }}>
+                {items.map((i, index) => (
+                  <Typography
+                    key={index}
+                    variant="h6"
+                    sx={{
                       color: hoveredIndex === index && "#cc0000",
-                      transform: "rotate(180deg)",
-                    },
-                    position: "relative",
-                  }}
-                  onClick={() => (window.location.href = `${i.link}`)}
-                  onMouseEnter={() => {
-                    i?.listItems && setHoveredIndex(index);
-                    setListItems(i.listItems);
-                  }}
-                  onMouseLeave={() => {
-                    i?.listItems && setHoveredIndex(null);
-                    setListItems([]);
-                  }}
-                >
-                  <PopOver list={i?.listItems} open={hoveredIndex === index} />
-                  {i.label}{" "}
-                  {i.listItems && (
-                    <ArrowDropDownIcon
-                      className="arrow-icon"
-                      sx={{
-                        color: isAppBarHovered && "#cc0000",
-                        display: "inline-flex",
-                        transition: "transform 0.3s",
-                      }}
-                    />
-                  )}
-                </Typography>
-              ))}
-            </div>
+                      cursor: "pointer",
+                      fontSize: "1.0rem",
+                      display: "flex",
+                      alignItems: "center",
+                      marginLeft: "10px",
+                      "&:hover .arrow-icon": {
+                        color: hoveredIndex === index && "#cc0000",
+                        transform: "rotate(180deg)",
+                      },
+                      position: "relative",
+                    }}
+                    onClick={() => (window.location.href = `${i.link}`)}
+                    onMouseEnter={() => {
+                      i?.listItems && setHoveredIndex(index);
+                      setListItems(i.listItems);
+                    }}
+                    onMouseLeave={() => {
+                      i?.listItems && setHoveredIndex(null);
+                      setListItems([]);
+                    }}
+                  >
+                    <PopOver list={i?.listItems} open={hoveredIndex === index} />
+                    {i.label} {i.listItems && (
+                      <ArrowDropDownIcon
+                        className="arrow-icon"
+                        sx={{
+                          color: isAppBarHovered && "#cc0000",
+                          display: "inline-flex",
+                          transition: "transform 0.3s",
+                        }}
+                      />
+                    )}
+                  </Typography>
+                ))}
+              </div>
+            )}
           </Grid>
           <div>
             <Typography
               variant="p"
-              sx={{
-                color: "black",
+              sx={{ color: isScrolled ? "red" : isAppBarHovered ? "black" : "white",
                 "&:hover": { color: "darkgrey", cursor: "pointer" },
               }}
             >
-              Explore{" "}
-              <SearchIcon
-                sx={{
-                  color: isScrolled
-                    ? "red"
-                    : isAppBarHovered
-                    ? "black"
-                    : "white",
-                }}
-              />{" "}
-              |{" "}
-              <Saveicon
-                sx={{
-                  color: isScrolled
-                    ? "red"
-                    : isAppBarHovered
-                    ? "black"
-                    : "white",
-                }}
-              />
+              Explore <SearchIcon sx={{ color: isScrolled ? "red" : isAppBarHovered ? "black" : "white" }} /> | 
+              <Saveicon sx={{ color: isScrolled ? "red" : isAppBarHovered ? "black" : "white" }} />
             </Typography>
           </div>
         </Toolbar>
@@ -288,7 +270,3 @@ export default function NavBar() {
     </>
   );
 }
-
-
-
-
